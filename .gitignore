@@ -1,0 +1,34 @@
+# See https://help.github.com/articles/ignoring-files/ for more about ignoring files.
+
+# dependencies
+backend/node_modules
+excel-data-importer/node_modules
+/.pnp
+.pnp.js
+
+# testing
+/coverage
+
+# production
+backend/build
+excel-data-importer/build
+
+# misc
+backend/.DS_Store
+backend/.env.local
+backend/.env.development.local
+backend/.env.test.local
+backend/.env.production.local
+
+backend/.env
+excel-data-importer/.env
+
+excel-data-importer/.DS_Store
+excel-data-importer/.env.local
+excel-data-importer/.env.development.local
+excel-data-importer/.env.test.local
+excel-data-importer/.env.production.local
+
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
