@@ -172,7 +172,7 @@ const FileUpload = () => {
       const response = await axios.delete(`${backendUrl}/api/flush-data`);
       if (response.status === 200) {
         setSheetsData([]);
-        toast.success("Data Deleted successfully!");
+        toast.info("Data Deleted successfully!");
       } else {
         toast.error(`Error: ${response.error}`);
       }
