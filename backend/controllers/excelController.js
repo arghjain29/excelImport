@@ -137,3 +137,13 @@ exports.importData = async (req, res) => {
     res.status(500).json({ error: "Failed to update data" });
   }
 };
+
+exports.flushData = async (req, res) => {
+  try {
+    await Data.deleteMany({});
+    res.status(200).json({ message: "Data flushed successfully!" });
+  } catch (error) {
+    console.error("Flush Error:", error);
+    res.status(500).json({ error: "Failed to flush data" });
+  }
+}

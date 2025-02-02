@@ -5,7 +5,7 @@ import { toast } from "react-toastify";
 import DataPreview from "./DataPreview";
 import * as XLSX from "xlsx";
 import { saveAs } from "file-saver";
-import { format} from "date-fns";
+import { format } from "date-fns";
 
 const FileUpload = () => {
   const [file, setFile] = useState(null);
@@ -129,9 +129,9 @@ const FileUpload = () => {
       alert("No data to export!");
       return;
     }
-  
+
     const workbook = XLSX.utils.book_new();
-  
+
     sheetsData.forEach((sheet) => {
       if (sheet.data.length > 0) {
         // Format dates & restructure data
@@ -141,23 +141,44 @@ const FileUpload = () => {
           Date: format(new Date(row.date), "dd-MM-yyyy"), // Ensures proper date formatting
           Verified: row.verified ? "Yes" : "No", // Converts boolean to readable text
         }));
-  
+
         // Create worksheet with formatted data
         const worksheet = XLSX.utils.json_to_sheet(formattedData, {
           header: ["Name", "Amount", "Date", "Verified"], // Ensuring correct header order
         });
-  
-        XLSX.utils.book_append_sheet(workbook, worksheet, sheet.name || "Sheet");
+
+        XLSX.utils.book_append_sheet(
+          workbook,
+          worksheet,
+          sheet.name || "Sheet"
+        );
       }
     });
-  
+
     // Convert workbook to Excel file & trigger download
-    const excelBuffer = XLSX.write(workbook, { bookType: "xlsx", type: "array" });
+    const excelBuffer = XLSX.write(workbook, {
+      bookType: "xlsx",
+      type: "array",
+    });
     const blob = new Blob([excelBuffer], {
       type: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;charset=UTF-8",
     });
-  
+
     saveAs(blob, "exported_data.xlsx");
+  };
+
+  const handleFlushData = async () => {
+    try {
+      const response = await axios.delete(`${backendUrl}/api/flush-data`);
+      if (response.status === 200) {
+        setSheetsData([]);
+        toast.success("Data Deleted successfully!");
+      } else {
+        toast.error(`Error: ${response.error}`);
+      }
+    } catch (error) {
+      toast.error("Error flushing data:", error);
+    }
   };
 
   return (
@@ -207,6 +228,7 @@ const FileUpload = () => {
           handleImport={handleImport}
           importDone={importDone}
           handleExport={handleExport}
+          handleFlushData={handleFlushData}
         />
       )}
     </div>

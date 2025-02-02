@@ -11,6 +11,7 @@ const DataPreview = ({
   handleImport,
   importDone,
   handleExport,
+  handleFlushData
 }) => {
   const [selectedSheet, setSelectedSheet] = useState("");
   const [currentPage, setCurrentPage] = useState(0);
@@ -172,6 +173,12 @@ const DataPreview = ({
             📤 Export to Excel
           </button>
         )}
+        <button
+          className="bg-red-500 text-white px-5 py-2 rounded-lg shadow-md hover:bg-red-600 transition-all duration-300 transform hover:scale-105"
+          onClick={handleFlushData}
+        >
+          🗑️ Flush All Data
+        </button>
       </div>
     </div>
   );
